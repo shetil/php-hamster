@@ -1,0 +1,15 @@
+<?php
+// Example config for php-hamster. Rename this file to config.php before
+// running php-hamster for the first time
+
+
+$config['db'] = 'hamster.db';
+$config['include'] = '/usr/share/php';
+
+// Settings defaults spare you from settings these options each time
+// hamster is run. 
+$config['defaults']= array(
+    'm'=>'add'
+);
+
+return $config;

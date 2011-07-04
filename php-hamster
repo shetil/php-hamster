@@ -1,0 +1,34 @@
+#!/usr/bin/php -q
+<?php
+require 'Cli.php';
+
+$options = getopt(Hamster_Cli::$_cfg_options,  Hamster_Cli::$_cfg_longopt);
+
+// If php-hamster is run with --config then used the specified config file
+if(isset($options['config'])){
+    $file = $options['config'];
+} else {
+    $file = __DIR__.'/config.php';
+}
+
+if(!file_exists($file)){
+    print "\nConfig file doesn't exists: ".$file."\n\n";
+    exit;
+}
+$config = include($file);
+     
+set_include_path($config['include'].':.');
+
+require_once 'Zend/Loader/Autoloader.php';
+$autoloader = Zend_Loader_Autoloader::getInstance();
+
+try{
+    $cli = new Hamster_Cli($config,$options);
+    $cli->run();
+} catch(Exception $e){
+    
+    print "\nphp-hamster failed!\n";
+    print $e->getMessage();
+    print "\n\n";
+    
+}
