@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Post Commit script for git.
+# Store it in repository_folder/.git/hooks
+# Change the path of php-hamster to match your setup
+
+git log -n1 | php-hamster -m gitlog -a activity@category -t commit 
