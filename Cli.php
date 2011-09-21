@@ -13,7 +13,7 @@ class Hamster_Cli{
     private $_db;
     private $_defaults = array();
     public static $_cfg_options = 'm:s:e:a:t:d:f:';
-    public static $_cfg_longopt = array('test','config:','help');
+    public static $_cfg_longopt = array('test','config:','help','author:');
     private $_options;
    
     public function __construct($config,$options) {
@@ -138,6 +138,13 @@ class Hamster_Cli{
 
             $result = preg_match("/Date:\s+(.*)\n\n(.*)/", $commit,$matches);
 
+            if(isset($this->_options['author'])){
+                $auth_found = preg_match("/Author:\s+{$this->_options['author']}(.*)/",$commit);
+                if($auth_found == false){
+                    continue;
+                }
+            }
+            
             if(!$result){
                 throw new Exception('Invalid commit entry: '.$commit);
             }
@@ -284,7 +291,9 @@ class Hamster_Cli{
     -d  Description
     -t  Tag (seperated by comma)
     -f  File. It also possible to use stdin.
+    
 
+    --author use this to only except commits from a specific author in the gitlog
     --test Will print instead of inserting into database
     --config path to config file (defaults to config.php in php-hamster directory
     --help This text
